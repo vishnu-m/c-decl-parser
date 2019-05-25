@@ -11,3 +11,6 @@ test: libclang_parse.bin
 
 clean:
 	rm -f libclang_parse.bin
+
+ast-dump: src/test.c
+	clang -Xclang -ast-dump src/test.c

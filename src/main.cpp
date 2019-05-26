@@ -38,10 +38,8 @@ CXChildVisitResult enum_visitor(CXCursor cursor, CXCursor parent, CXClientData) 
     std::cout << "IntegerLiteral" << "   " << enum_const_value << "  Parent = " << get_cursor_spelling(parent) << std::endl;
   }
   else if(get_cursor_kind(cursor) == "EnumConstantDecl"){
-    long long enum_const_value = clang_getEnumConstantDeclValue(cursor);
     std::cout << "EnumConstantDecl" << "   " << get_cursor_spelling(cursor) << "  Parent = " << get_parent(cursor) << std::endl;
   }
-  
   return CXChildVisit_Recurse;
 }
 

@@ -29,7 +29,7 @@ void get_cursor_spelling(CXCursor cursor){
     printf("EnumConstantDecl\t");
     get_cursor_spelling(cursor);
     printf("\tParent = ");
-    get_cursor_spelling(cursor);
+    get_cursor_spelling(parent);
     printf("\n");
   }
   return CXChildVisit_Recurse;

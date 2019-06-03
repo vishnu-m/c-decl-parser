@@ -7,7 +7,7 @@ libclang_parse.bin: src/main.c
 	clang -I $(INCDIR) $(LDFLAGS) -lclang -o libclang_parse.bin src/main.c -Wall
 
 test: libclang_parse.bin
-	./libclang_parse.bin src/test.c 7 9 -Wall
+	./libclang_parse.bin src/test.c -Wall
 
 clean:
 	rm -f libclang_parse.bin

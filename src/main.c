@@ -71,10 +71,6 @@ enum CXChildVisitResult enum_visitor(CXCursor cursor, CXCursor parent, CXClientD
 }
 
 enum CXChildVisitResult struct_visitor(CXCursor cursor, CXCursor parent, CXClientData client_data){
-  // print_cursor_kind(cursor);
-  // printf("\t");
-  // print_cursor_spelling(cursor);
-  // printf("\n");
   if(clang_getCursorKind(cursor) == CXCursor_FieldDecl){
     printf("FieldDecl\t");
     print_cursor_spelling(cursor);

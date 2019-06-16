@@ -35,50 +35,50 @@ void print_parent(CXCursor cursor){
 }
 
 void enum_handler(CXCursor cursor){
-  printf("EnumDecl\t");
+  printf("EnumDecl\t\"");
   print_cursor_spelling(cursor);
-  printf("\t\tParent = ");
+  printf("\"\t\tParent = \"");
   print_parent(cursor);
-  printf("\n");
+  printf("\"\n");
   clang_visitChildren(cursor, enum_visitor, 0);
 }
 
 void struct_handler(CXCursor cursor){
-  printf("StructDecl\t");
+  printf("StructDecl\t\"");
   print_cursor_spelling(cursor);
-  printf("\t\tParent = ");
+  printf("\"\t\tParent = \"");
   print_parent(cursor);
-  printf("\n");
+  printf("\"\n");
   clang_visitChildren(cursor, struct_visitor, 0);
 }
 
 enum CXChildVisitResult enum_visitor(CXCursor cursor, CXCursor parent, CXClientData client_data) {
   if(clang_getCursorKind(cursor) == CXCursor_IntegerLiteral){
     long long enum_const_value = clang_getEnumConstantDeclValue(parent);
-    printf("IntegerLiteral\t\t value = %lld \t\tParent = ", enum_const_value);
+    printf("IntegerLiteral\t\t value = \"%lld\" \t\tParent = \"", enum_const_value);
     print_cursor_spelling(parent);
-    printf("\n");
+    printf("\"\n");
   }
 
   else if(clang_getCursorKind(cursor) == CXCursor_EnumConstantDecl){
-    printf("EnumConstantDecl\t");
+    printf("EnumConstantDecl\t\"");
     print_cursor_spelling(cursor);
-    printf("\t\tParent = ");
+    printf("\"\t\tParent = \"");
     print_cursor_spelling(parent);
-    printf("\n");
+    printf("\"\n");
   }
   return CXChildVisit_Recurse;
 }
 
 enum CXChildVisitResult struct_visitor(CXCursor cursor, CXCursor parent, CXClientData client_data){
   if(clang_getCursorKind(cursor) == CXCursor_FieldDecl){
-    printf("FieldDecl\t");
+    printf("FieldDecl\t\"");
     print_cursor_spelling(cursor);
-    printf("\t\ttype = ");
+    printf("\"\t\ttype = \"");
     print_cursor_type(cursor);
-    printf("\t\tParent = ");
+    printf("\"\t\tParent = \"");
     print_cursor_spelling(parent);
-    printf("\n");
+    printf("\"\n");
   }
 
   else if(clang_getCursorKind(cursor) == CXCursor_StructDecl){

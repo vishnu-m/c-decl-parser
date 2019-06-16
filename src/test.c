@@ -1,4 +1,4 @@
-// enum week{Mon=99, Tue, Wed, Thur, Fri, Sat, Sun};
+enum week{Mon=99, Tue, Wed, Thur, Fri, Sat, Sun};
 
 // struct Student
 // {

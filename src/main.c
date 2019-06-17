@@ -97,9 +97,15 @@ enum CXChildVisitResult struct_child_visitor(CXCursor cursor, CXCursor parent, C
       print_cursor_spelling(cursor);
       printf("\"\t\ttype = \"");
       print_cursor_type(cursor);
-      printf("\"\t\tParent = \"");
+      printf("\"");
+      int is_bit_field = clang_Cursor_isBitField(cursor);
+      if(is_bit_field){
+        printf("\t\t(bitfield = %d)", clang_getFieldDeclBitWidth(cursor));
+      }
+      printf("\t\tParent = \"");
       print_cursor_spelling(parent);
       printf("\"\n");
+      
       break;
     
     case CXCursor_StructDecl:
@@ -109,7 +115,7 @@ enum CXChildVisitResult struct_child_visitor(CXCursor cursor, CXCursor parent, C
     case CXCursor_EnumDecl:
       enum_handler(cursor);
       break;
-
+    
     default:
       printf("Unaddressed - ");
       print_CXString(clang_getCursorKindSpelling(cursor_kind));

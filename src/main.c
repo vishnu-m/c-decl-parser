@@ -2,8 +2,8 @@
 #include <stdio.h>
 
 enum CXChildVisitResult visitor(CXCursor, CXCursor, CXClientData); 
-enum CXChildVisitResult enum_visitor(CXCursor, CXCursor, CXClientData); 
-enum CXChildVisitResult struct_visitor(CXCursor, CXCursor, CXClientData); 
+enum CXChildVisitResult enum_child_visitor(CXCursor, CXCursor, CXClientData); 
+enum CXChildVisitResult struct_child_visitor(CXCursor, CXCursor, CXClientData); 
 void enum_handler(CXCursor);
 void struct_handler(CXCursor);
 
@@ -44,7 +44,7 @@ void enum_handler(CXCursor cursor)
   printf("\"\t\tParent = \"");
   print_parent(cursor);
   printf("\"\n");
-  clang_visitChildren(cursor, enum_visitor, 0);
+  clang_visitChildren(cursor, enum_child_visitor, 0);
 }
 
 void struct_handler(CXCursor cursor)
@@ -54,10 +54,10 @@ void struct_handler(CXCursor cursor)
   printf("\"\t\tParent = \"");
   print_parent(cursor);
   printf("\"\n");
-  clang_visitChildren(cursor, struct_visitor, 0);
+  clang_visitChildren(cursor, struct_child_visitor, 0);
 }
 
-enum CXChildVisitResult enum_visitor(CXCursor cursor, CXCursor parent, CXClientData client_data) 
+enum CXChildVisitResult enum_child_visitor(CXCursor cursor, CXCursor parent, CXClientData client_data) 
 {
   enum CXCursorKind cursor_kind = clang_getCursorKind(cursor);
   switch(cursor_kind)
@@ -78,11 +78,16 @@ enum CXChildVisitResult enum_visitor(CXCursor cursor, CXCursor parent, CXClientD
       print_cursor_spelling(parent);
       printf("\"\n");
       break;
+
+    default:
+      printf("Unaddressed - ");
+      print_CXString(clang_getCursorKindSpelling(cursor_kind));
+      printf("\n");
   }
   return CXChildVisit_Recurse;
 }
 
-enum CXChildVisitResult struct_visitor(CXCursor cursor, CXCursor parent, CXClientData client_data)
+enum CXChildVisitResult struct_child_visitor(CXCursor cursor, CXCursor parent, CXClientData client_data)
 {
   enum CXCursorKind cursor_kind = clang_getCursorKind(cursor); 
   switch(cursor_kind)
@@ -95,6 +100,7 @@ enum CXChildVisitResult struct_visitor(CXCursor cursor, CXCursor parent, CXClien
       printf("\"\t\tParent = \"");
       print_cursor_spelling(parent);
       printf("\"\n");
+      break;
     
     case CXCursor_StructDecl:
       struct_handler(cursor);
@@ -102,22 +108,32 @@ enum CXChildVisitResult struct_visitor(CXCursor cursor, CXCursor parent, CXClien
 
     case CXCursor_EnumDecl:
       enum_handler(cursor);
-    
+      break;
+
+    default:
+      printf("Unaddressed - ");
+      print_CXString(clang_getCursorKindSpelling(cursor_kind));
+      printf("\n");  
   }
   return CXChildVisit_Continue;
 }
 
-enum CXChildVisitResult visitor(CXCursor cursor, CXCursor parent, CXClientData client_data) {
+enum CXChildVisitResult toplevel_visitor(CXCursor cursor, CXCursor parent, CXClientData client_data) {
   enum CXCursorKind cursor_kind = clang_getCursorKind(cursor); 
   switch(cursor_kind)
   {
-  case CXCursor_EnumDecl:
-    enum_handler(cursor);
-    break;
+    case CXCursor_EnumDecl:
+      enum_handler(cursor);
+      break;
 
-  case CXCursor_StructDecl:
-    struct_handler(cursor);
-    break;
+    case CXCursor_StructDecl:
+      struct_handler(cursor);
+      break;
+
+    default:
+      printf("Unaddressed - ");
+      print_CXString(clang_getCursorKindSpelling(cursor_kind));
+      printf("\n");
   }
   return CXChildVisit_Continue;
 }
@@ -126,7 +142,7 @@ int main(int argc, char **argv) {
   CXIndex index = clang_createIndex(1, 0);
   CXTranslationUnit TU = clang_parseTranslationUnit(index, 0, argv, argc, 0, 0, CXTranslationUnit_None);
   CXCursor cursor = clang_getTranslationUnitCursor(TU);
-  clang_visitChildren(cursor, visitor, 0);
+  clang_visitChildren(cursor, toplevel_visitor, 0);
   clang_disposeTranslationUnit(TU);
   clang_disposeIndex(index);
   return 0;

@@ -29,7 +29,7 @@ A Lua library to parse C header files. The library generates a Lua representatio
 
 >     export LD_LIBRARY_PATH=/usr/local/clang_8.0.0/lib:$LD_LIBRARY_PATH
 
-**Setting up**
+**Setting up : **
 
  1.  Print out AST representation of declarations in `test.c`
  

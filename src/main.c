@@ -4,8 +4,8 @@
 enum CXChildVisitResult visitor(CXCursor, CXCursor, CXClientData); 
 enum CXChildVisitResult enum_child_visitor(CXCursor, CXCursor, CXClientData); 
 enum CXChildVisitResult struct_child_visitor(CXCursor, CXCursor, CXClientData); 
-void enum_handler(CXCursor);
-void struct_handler(CXCursor);
+void enum_handler(CXCursor, CXCursor, CXClientData);
+void struct_handler(CXCursor, CXCursor, CXClientData);
 
 void print_CXString(CXString s)
 {
@@ -31,22 +31,23 @@ void print_parent(CXCursor cursor)
    print_CXString(clang_getCursorDisplayName(parent));
 }
 
-void enum_handler(CXCursor cursor)
+void enum_handler(CXCursor cursor, CXCursor parent, CXClientData client_data)
 {
   printf("EnumDecl\t\"");
   print_cursor_spelling(cursor);
   printf("\"\t\tParent = \"");
-  print_parent(cursor);
+  //print_parent(cursor);
+  print_cursor_spelling(parent);
   printf("\"\n");
   clang_visitChildren(cursor, enum_child_visitor, 0);
 }
 
-void struct_handler(CXCursor cursor)
+void struct_handler(CXCursor cursor, CXCursor parent, CXClientData client_data)
 {
   printf("StructDecl\t\"");
   print_cursor_spelling(cursor);
   printf("\"\t\tParent = \"");
-  print_parent(cursor);
+  print_cursor_spelling(parent);
   printf("\"\n");
   clang_visitChildren(cursor, struct_child_visitor, 0);
 }
@@ -104,11 +105,11 @@ enum CXChildVisitResult struct_child_visitor(CXCursor cursor, CXCursor parent, C
       break;
     
     case CXCursor_StructDecl:
-      struct_handler(cursor);
+      struct_handler(cursor, parent, 0);
       break;
 
     case CXCursor_EnumDecl:
-      enum_handler(cursor);
+      enum_handler(cursor, parent, 0);
       break;
     
     default:
@@ -124,11 +125,11 @@ enum CXChildVisitResult toplevel_visitor(CXCursor cursor, CXCursor parent, CXCli
   switch(cursor_kind)
   {
     case CXCursor_EnumDecl:
-      enum_handler(cursor);
+      enum_handler(cursor, parent, 0);
       break;
 
     case CXCursor_StructDecl:
-      struct_handler(cursor);
+      struct_handler(cursor, parent, 0);
       break;
 
     default:

@@ -7,7 +7,6 @@ enum CXChildVisitResult struct_child_visitor(CXCursor, CXCursor, CXClientData);
 void enum_handler(CXCursor);
 void struct_handler(CXCursor);
 
-
 void print_CXString(CXString s)
 {
   printf("%s", clang_getCString(s));
@@ -25,11 +24,6 @@ void print_cursor_spelling(CXCursor cursor)
   CXString cursor_spelling = clang_getCursorSpelling(cursor);
   print_CXString(cursor_spelling);
 }
-
-// void print_cursor_kind(CXCursor cursor){
-//   enum CXCursorKind cursor_kind = clang_getCursorKind(cursor);
-//   print_CXString(clang_getCursorKindSpelling(cursor_kind));
-// }
 
 void print_parent(CXCursor cursor)
 {
@@ -99,7 +93,8 @@ enum CXChildVisitResult struct_child_visitor(CXCursor cursor, CXCursor parent, C
       print_cursor_type(cursor);
       printf("\"");
       int is_bit_field = clang_Cursor_isBitField(cursor);
-      if(is_bit_field){
+      if(is_bit_field)
+      {
         printf("\t\t(bitfield = %d)", clang_getFieldDeclBitWidth(cursor));
       }
       printf("\t\tParent = \"");

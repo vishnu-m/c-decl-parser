@@ -1,0 +1,4 @@
+EnumDecl	"colours"		Parent = "/home/vishnu/Desktop/c-decl-parser/tests/enum.c"
+EnumConstantDecl	"Red"		Parent = "colours"
+EnumConstantDecl	"Black"		Parent = "colours"
+EnumConstantDecl	"Yellow"		Parent = "colours"

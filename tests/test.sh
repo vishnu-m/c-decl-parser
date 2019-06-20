@@ -1,9 +1,11 @@
 #!/bin/bash
 
-for file in $PWD/*.c; do
+prog=.././libclang_parse
+cd `dirname $0`
+for file in *.c; do
     out=${file%.c}.out
     tmp=`mktemp /tmp/test.XXXXXX`
-    make curr_file=$file specific_file_out | grep -vE '^make|^./libclang_parse.bin' > $tmp
+    $prog $file -Wall > $tmp
     if ! cmp --silent $tmp $out; then
         echo "test failed: $file"
         exit 1
@@ -11,5 +13,4 @@ for file in $PWD/*.c; do
     rm $tmp
 done
 
-echo "Tests successful"
 

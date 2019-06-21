@@ -7,31 +7,31 @@ enum CXChildVisitResult struct_child_visitor(CXCursor, CXCursor, CXClientData);
 void enum_handler(CXCursor, CXCursor, CXClientData);
 void struct_handler(CXCursor, CXCursor, CXClientData);
 
-void print_CXString(CXString s)
+void print_CXString(CXString s) 
 {
   printf("%s", clang_getCString(s));
   clang_disposeString(s);
 }
 
-void print_cursor_type(CXCursor cursor)
+void print_cursor_type(CXCursor cursor) 
 {
   CXType cursor_type = clang_getCursorType(cursor);
   print_CXString(clang_getTypeSpelling(cursor_type));
 }
 
-void print_cursor_spelling(CXCursor cursor)
+void print_cursor_spelling(CXCursor cursor) 
 {
   CXString cursor_spelling = clang_getCursorSpelling(cursor);
   print_CXString(cursor_spelling);
 }
 
-void print_parent(CXCursor cursor)
+void print_parent(CXCursor cursor) 
 {
    CXCursor parent = clang_getCursorLexicalParent(cursor);
    print_CXString(clang_getCursorDisplayName(parent));
 }
 
-void enum_handler(CXCursor cursor, CXCursor parent, CXClientData client_data)
+void enum_handler(CXCursor cursor, CXCursor parent, CXClientData client_data) 
 {
   printf("EnumDecl\t\"");
   print_cursor_spelling(cursor);
@@ -42,7 +42,7 @@ void enum_handler(CXCursor cursor, CXCursor parent, CXClientData client_data)
   clang_visitChildren(cursor, enum_child_visitor, 0);
 }
 
-void struct_handler(CXCursor cursor, CXCursor parent, CXClientData client_data)
+void struct_handler(CXCursor cursor, CXCursor parent, CXClientData client_data) 
 {
   printf("StructDecl\t\"");
   print_cursor_spelling(cursor);
@@ -55,10 +55,8 @@ void struct_handler(CXCursor cursor, CXCursor parent, CXClientData client_data)
 enum CXChildVisitResult enum_child_visitor(CXCursor cursor, CXCursor parent, CXClientData client_data) 
 {
   enum CXCursorKind cursor_kind = clang_getCursorKind(cursor);
-  switch(cursor_kind)
-  {
-    case CXCursor_IntegerLiteral:
-    {
+  switch(cursor_kind){
+    case CXCursor_IntegerLiteral: {
       long long enum_const_value = clang_getEnumConstantDeclValue(parent);
       printf("IntegerLiteral\t\t value = \"%lld\" \t\tParent = \"", enum_const_value);
       print_cursor_spelling(parent);
@@ -85,8 +83,7 @@ enum CXChildVisitResult enum_child_visitor(CXCursor cursor, CXCursor parent, CXC
 enum CXChildVisitResult struct_child_visitor(CXCursor cursor, CXCursor parent, CXClientData client_data)
 {
   enum CXCursorKind cursor_kind = clang_getCursorKind(cursor); 
-  switch(cursor_kind)
-  {
+  switch(cursor_kind) {
     case CXCursor_FieldDecl:
       printf("FieldDecl\t\"");
       print_cursor_spelling(cursor);
@@ -94,14 +91,12 @@ enum CXChildVisitResult struct_child_visitor(CXCursor cursor, CXCursor parent, C
       print_cursor_type(cursor);
       printf("\"");
       int is_bit_field = clang_Cursor_isBitField(cursor);
-      if(is_bit_field)
-      {
+      if(is_bit_field){
         printf("\t\t(bitfield = %d)", clang_getFieldDeclBitWidth(cursor));
       }
       printf("\t\tParent = \"");
       print_cursor_spelling(parent);
       printf("\"\n");
-      
       break;
     
     case CXCursor_StructDecl:
@@ -120,10 +115,10 @@ enum CXChildVisitResult struct_child_visitor(CXCursor cursor, CXCursor parent, C
   return CXChildVisit_Continue;
 }
 
-enum CXChildVisitResult toplevel_visitor(CXCursor cursor, CXCursor parent, CXClientData client_data) {
+enum CXChildVisitResult toplevel_visitor(CXCursor cursor, CXCursor parent, CXClientData client_data)
+{
   enum CXCursorKind cursor_kind = clang_getCursorKind(cursor); 
-  switch(cursor_kind)
-  {
+  switch(cursor_kind) {
     case CXCursor_EnumDecl:
       enum_handler(cursor, parent, 0);
       break;

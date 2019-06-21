@@ -5,19 +5,18 @@ struct coordinates {
 
 /* Struct with enum declaration inside */
 struct rainbow {
-    enum Fruit{Violet, Indigo, Blue, Green, Yellow, Red}field1;
+    enum Fruit{Violet, Indigo, Blue, Green, Yellow, Red};
+    enum Fruit field1;
 };
 
 /* Anonymous struct */
 struct {
    char alpha;
    int num;
-};
+} var;
 
 /* Nested Struct */
 struct Student {
-    char name[50];
-    int age;
     struct marks{
         int physics;        
     }m1, m2;
@@ -41,8 +40,7 @@ struct bits {
 struct context;
 
 struct funcptrs{
-  void (*func0)(struct context *ctx);
-  void (*func1)(void);
+  struct context *ctx;
 };
 
 struct context{

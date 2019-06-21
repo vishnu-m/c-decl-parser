@@ -1,6 +1,6 @@
 #!/bin/bash
 
-prog=.././libclang_parse
+prog=../libclang_parse
 cd `dirname $0`
 for file in *.c; do
     out=${file%.c}.out
@@ -12,5 +12,3 @@ for file in *.c; do
     fi
     rm $tmp
 done
-
-

@@ -1,5 +1,6 @@
 #include <clang-c/Index.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 enum CXChildVisitResult visitor(CXCursor, CXCursor, CXClientData); 
 enum CXChildVisitResult enum_child_visitor(CXCursor, CXCursor, CXClientData); 
@@ -89,9 +90,8 @@ void function_handler(CXCursor cursor, CXCursor parent, CXClientData client_data
 {
         CXType type = clang_getCursorType(cursor);
         int num_args = clang_Cursor_getNumArguments(cursor);
-        CINDEX_LINKAGE unsigned is_function_inline;
+        CINDEX_LINKAGE bool is_function_inline;
         is_function_inline = clang_Cursor_isFunctionInlined(cursor);
-        
         printf("FunctionDecl\t");
         if (is_function_inline) {
                 printf("\t\t inline \t\t");

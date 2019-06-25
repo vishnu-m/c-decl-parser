@@ -1,0 +1,11 @@
+FunctionDecl	"max"		storage class specifier = "extern"		return type = "int"	Args = 
+		"a"		type="int"
+		"b"		type="int"
+FunctionDecl	"foo"		storage class specifier = ""		return type = "int (*)[3]"	Args = 
+		"p"		type="const void *"
+FunctionDecl	"check"		storage class specifier = "static"		return type = "const double"	Args = 
+FunctionDecl			 inline 		"sum"		storage class specifier = ""		return type = "int"	Args = 
+		"a"		type="int"
+		"b"		type="int"
+FunctionDecl	"increment"		storage class specifier = ""		return type = "int"	Args = 
+		"a"		type="int"

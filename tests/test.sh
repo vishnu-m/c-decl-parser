@@ -2,6 +2,7 @@
 
 prog=../libclang_parse
 cd `dirname $0`
+
 for file in *.c; do
     out=${file%.c}.out
     tmp=`mktemp /tmp/test.XXXXXX`

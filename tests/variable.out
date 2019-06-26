@@ -1,0 +1,8 @@
+VarDecl		"list"		storage class specifier = "static"		type = "int [20]"
+VarDecl		"aptr"		storage class specifier = ""		type = "int *[10]"
+StructDecl	"st1"		Parent = "variable.c"
+FieldDecl	"a"		type = "int"		Parent = "st1"
+VarDecl		"st1_instance"		storage class specifier = ""		type = "struct st1"
+UnionDecl	"un1"		Parent = "variable.c"
+FieldDecl	"s"		type = "char *"		Parent = "un1"
+VarDecl		"un1_instance"		storage class specifier = ""		type = "union un1"

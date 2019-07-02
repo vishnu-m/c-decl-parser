@@ -1,12 +1,12 @@
 
+
   
 
 # c-decl-parser
 
   
 
-A Lua library to parse C header files. The library generates a Lua representation of the static C declarations.
-
+Program to print AST representation of C declarations using Libclang.
   
 
 # Prerequisite
@@ -59,12 +59,12 @@ A Lua library to parse C header files. The library generates a Lua representatio
 
 1. Print out AST representation of declarations in `test.c`
 
-> make test
-
-  
+> make check
 
 2. Print out Clang's full featured AST representation of `test.c`
 
-  
-
 > make ast-dump
+
+3. Run test script
+
+>make test
